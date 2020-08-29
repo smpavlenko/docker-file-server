@@ -16,6 +16,10 @@ import java.util.List;
 public class GetRequestProcessor extends HeadRequestProcessor {
     private static final Logger logger = LogManager.getLogger();
 
+    private static final String NOT_FOUND_RESPONSE = "404_response.html";
+    private static final String LIST_PLACEHOLDER = "%LIST%";
+    private static final String TEMPLATE_LIST_HTML = "templates/dir_template.html";
+
     private final FileService fileService;
     private final ResponseService responseService;
     private final HtmlService htmlService;
@@ -56,8 +60,8 @@ public class GetRequestProcessor extends HeadRequestProcessor {
 
             final String html = htmlService.makeFilesHtmlBlock(filePath, list);
 
-            final String templateContent = fileService.getFileContent("templates/dir_template.html");
-            final String newText = templateContent.replaceAll("%LIST%", parentPath + html);
+            final String templateContent = fileService.getFileStringContent(TEMPLATE_LIST_HTML);
+            final String newText = templateContent.replaceAll(LIST_PLACEHOLDER, parentPath + html);
 
             response.setPayload(newText.getBytes());
             return response;
@@ -80,7 +84,7 @@ public class GetRequestProcessor extends HeadRequestProcessor {
     protected Response processNotFoundRequest() {
         try {
             final Response response = super.processNotFoundRequest();
-            final String content = fileService.getFileContent("404_response.html");
+            final String content = fileService.getFileStringContent(NOT_FOUND_RESPONSE);
             response.setPayload(content.getBytes());
             return response;
         } catch (final IOException e) {

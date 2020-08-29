@@ -1,18 +1,20 @@
 package com.pavlenko.processor;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.pavlenko.dto.Request;
 import com.pavlenko.dto.Response;
 import com.pavlenko.service.FileService;
 import com.pavlenko.service.ResponseService;
 import com.pavlenko.util.HttpResults;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.File;
-import java.io.IOException;
 
 public class UnsupportedRequestProcessor extends GetRequestProcessor {
     private static final Logger logger = LogManager.getLogger();
+    private static final String FORBIDDEN_RESPONSE = "403_response.html";
 
     private final FileService fileService;
     private final ResponseService responseService;
@@ -39,7 +41,7 @@ public class UnsupportedRequestProcessor extends GetRequestProcessor {
             final Response response = responseService.buildEmptyHtmlResponse();
             response.setHttpResult(HttpResults.FORBIDDEN);
 
-            final String content = fileService.getFileContent("403_response.html");
+            final String content = fileService.getFileStringContent(FORBIDDEN_RESPONSE);
             response.setPayload(content.getBytes());
             return response;
         } catch (final IOException e) {

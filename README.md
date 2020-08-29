@@ -19,6 +19,7 @@ To build, deploy and verify application you must have installed
 * java version 11
 * maven
 * docker
+* http client (web browser, Postman, curl)
 
 ## Repository Structure
 ```bash
@@ -95,4 +96,24 @@ To build and deploy all at once, run
 To experience application working, type *localhost:8080* in web browser
 ![demo](assets/browser.png)
 
-To send HEAD requests or modify headers, use Postman or curl
+To send HEAD requests or modify *If-Match*, *If-Non-Match*, *If-Modified-Since* request headers, use Postman or curl
+```bash
+sergiipavlenko$ curl --head http://localhost:8080/README.md
+HTTP/1.1 200 OK
+date: Sat Aug 29 16:13:59 UTC 2020
+content-length: 3463
+ETag: "c258853ccf2c6c326f686595ea043d4f"
+content-type: text/markdown
+Last-Modified: Sat Aug 29 16:12:01 UTC 2020```
+```
+
+Example of request with *If-Match* header
+```bash
+sergiipavlenko$ curl --head http://localhost:8080/README.md --header 'If-Match: "0f46357eafa5c719e8e3bf277a993e07"'
+HTTP/1.1 304 Not Modified
+date: Sat Aug 29 16:15:58 UTC 2020
+content-length: 3471
+ETag: "7f8fd1e2c0241d5cc979f678d09bef6a"
+content-type: text/markdown
+Last-Modified: Sat Aug 29 16:14:56 UTC 2020
+```

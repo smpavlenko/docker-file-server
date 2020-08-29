@@ -19,7 +19,6 @@ public class Application {
             return;
         }
 
-
         final String rootDirPath = args[0];
         final File rootDir = new File(rootDirPath);
         if (!rootDir.exists() || !rootDir.isDirectory()) {
