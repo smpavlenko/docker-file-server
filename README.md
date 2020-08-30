@@ -113,40 +113,48 @@ To send HEAD requests or modify *If-Match*, *If-Non-Match*, *If-Modified-Since* 
 ```bash
 sergiipavlenko$ curl --head http://localhost:8080/README.md
 HTTP/1.1 200 OK
-date: Sat Aug 29 16:13:59 UTC 2020
-content-length: 3463
-ETag: "c258853ccf2c6c326f686595ea043d4f"
-content-type: text/markdown
-Last-Modified: Sat Aug 29 16:12:01 UTC 2020```
+Date: Sun, 30 Aug 2020 13:09:00 GMT
+Last-modified: Sun Aug 30 15:08:47 CEST 2020
+Content-type: text/plain
+Etag: "7c38bf8706e94b40a155c2aadd0d707d"
+Content-length: 5039
 ```
 
 Example of POST(unsupported) request
 ```bash
 sergiipavlenko$ curl -X POST --head http://localhost:8080/README.md
 HTTP/1.1 403 Forbidden
-Date: Sun, 30 Aug 2020 11:41:32 GMT
+Date: Sun, 30 Aug 2020 13:07:48 GMT
 Content-type: text/html
 Content-length: 206
+```
+
+Example of 404 Not Found request
+```bash
+sergiipavlenko$ curl --head http://localhost:8080/unknown
+HTTP/1.1 404 Not Found
+Date: Sun, 30 Aug 2020 13:09:49 GMT
+Content-type: text/html
 ```
 
 Example of request with *If-Match* header
 ```bash
 sergiipavlenko$ curl --head http://localhost:8080/README.md --header 'If-Match: "0f46357eafa5c719e8e3bf277a993e07"'
 HTTP/1.1 304 Not Modified
-date: Sat Aug 29 16:15:58 UTC 2020
-content-length: 3471
-ETag: "7f8fd1e2c0241d5cc979f678d09bef6a"
-content-type: text/markdown
-Last-Modified: Sat Aug 29 16:14:56 UTC 2020
+Date: Sun, 30 Aug 2020 13:08:29 GMT
+Last-modified: Sun Aug 30 15:08:22 CEST 2020
+Content-type: text/plain
+Etag: "1a28a3c5ccebec9db44a4e0634762016"
+Content-length: 5039
 ```
 
-Example of request with *If-Modified-Since* header
+Example of request with *If-Modified-Since* header. Date must pass standard java Date.toString() pattern
 ```bash
 sergiipavlenko$ curl --head http://localhost:8080/README.md --header 'If-Modified-Since: Sun Aug 30 13:35:22 CEST 2050'
 HTTP/1.1 304 Not Modified
-Date: Sun, 30 Aug 2020 11:39:24 GMT
-Last-modified: Sun Aug 30 13:35:22 CEST 2020
+Date: Sun, 30 Aug 2020 13:02:45 GMT
+Last-modified: Sun Aug 30 14:59:52 CEST 2020
 Content-type: text/plain
-Etag: "81a2297758872229fda4882eb849f674"
-Content-length: 4301
+Etag: "9e60ce9a14ff316c302f6fe6f5462052"
+Content-length: 5049
 ```

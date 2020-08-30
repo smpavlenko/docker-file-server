@@ -18,20 +18,10 @@ public class ResponseServiceTest {
     private final ResponseService responseService = new ResponseService();
 
     @Test
-    public void testBuildEmptyFailoverResponse() {
-        final Response response = responseService.buildEmptyFailoverResponse();
-
-        assertEquals(HttpCode.SERVICE_UNAVAILABLE, response.getHttpCode());
-        assertEquals(0, response.getPayload().length);
-        assertNotNull(response.getHeaders().get("date"));
-        assertEquals(ContentTypeUtil.TEXT_HTML, response.getHeaders().get("content-type"));
-    }
-
-    @Test
     public void testBuildFailoverResponse() {
         final Response response = responseService.buildFailoverResponse("message");
 
-        assertEquals(HttpCode.SERVICE_UNAVAILABLE, response.getHttpCode());
+        assertEquals(HttpCode.INTERNAL_SERVER_ERROR, response.getHttpCode());
         assertNotNull(response.getHeaders().get("date"));
         assertEquals(ContentTypeUtil.TEXT_HTML, response.getHeaders().get("content-type"));
         assertEquals("<html><body><h1>500 Internal Server Error</h1><h2>message</h2></body></html>", new String(response.getPayload()));

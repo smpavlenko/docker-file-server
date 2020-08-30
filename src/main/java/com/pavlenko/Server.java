@@ -13,6 +13,7 @@ import com.sun.net.httpserver.HttpServer;
 
 public class Server {
     private static final Logger logger = LogManager.getLogger();
+    private static final int N_THREADS = 10;
 
     private final String rootDir;
     private final HttpServer server;
@@ -26,7 +27,7 @@ public class Server {
         final var module = new Module();
         final Controller controller = new Controller(rootDir, module.processorFactory);
 
-        final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+        final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(N_THREADS);
         server.createContext("/", controller);
         server.setExecutor(threadPoolExecutor);
         server.start();

@@ -10,6 +10,7 @@ import com.pavlenko.dto.Request;
 import com.pavlenko.dto.Response;
 import com.pavlenko.processor.Processor;
 import com.pavlenko.processor.ProcessorFactory;
+import com.pavlenko.util.HttpCode;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -46,11 +47,15 @@ public class Controller implements HttpHandler {
 
         handleKeepAlive(httpExchange.getRequestHeaders(), responseHeaders);
 
-        try (final OutputStream outputStream = httpExchange.getResponseBody()) {
+        try {
             httpExchange.sendResponseHeaders(response.getHttpCode(), response.getPayload().length);
 
-            outputStream.write(response.getPayload());
-            outputStream.flush();
+            if ((response.getHttpCode() != HttpCode.NOT_MODIFIED) && (response.getPayload().length != 0)) {
+                try (final OutputStream outputStream = httpExchange.getResponseBody()) {
+                    outputStream.write(response.getPayload());
+                    outputStream.flush();
+                }
+            }
         } catch (final IOException e) {
             logger.error("Error during processing response: {}", e.getMessage());
         }

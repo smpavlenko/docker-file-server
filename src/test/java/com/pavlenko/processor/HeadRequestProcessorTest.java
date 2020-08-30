@@ -1,6 +1,7 @@
 package com.pavlenko.processor;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -44,7 +45,7 @@ public class HeadRequestProcessorTest {
 
         final Response result = headRequestProcessor.processFileRequest(request, file);
 
-        assertEquals(response, result);
+        assertSame(response, result);
         assertEquals(HttpCode.NOT_MODIFIED, result.getHttpCode());
 
         verify(fileServiceMock).getContentType(eq(file));

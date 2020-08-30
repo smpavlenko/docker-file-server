@@ -31,18 +31,11 @@ public class ResponseService {
     }
 
     public Response buildFailoverResponse(final String message) {
-        final Response response = buildEmptyFailoverResponse();
+        final Response response = new Response();
+        response.setHttpCode(HttpCode.INTERNAL_SERVER_ERROR);
+        response.addHeader("date", new Date().toString());
+        response.addHeader("content-type", ContentTypeUtil.TEXT_HTML);
         response.setPayload(("<html><body><h1>500 Internal Server Error</h1><h2>" + message + "</h2></body></html>").getBytes());
         return response;
     }
-
-    Response buildEmptyFailoverResponse() {
-        final Response response = new Response();
-        response.setHttpCode(HttpCode.SERVICE_UNAVAILABLE);
-        response.addHeader("date", new Date().toString());
-        response.addHeader("content-type", ContentTypeUtil.TEXT_HTML);
-        return response;
     }
-
-
-}
