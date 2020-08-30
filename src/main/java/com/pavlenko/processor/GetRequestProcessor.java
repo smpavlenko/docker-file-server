@@ -5,7 +5,7 @@ import com.pavlenko.dto.Response;
 import com.pavlenko.service.FileService;
 import com.pavlenko.service.HtmlService;
 import com.pavlenko.service.ResponseService;
-import com.pavlenko.util.HttpResults;
+import com.pavlenko.util.HttpCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +36,7 @@ public class GetRequestProcessor extends HeadRequestProcessor {
     protected Response processFileRequest(final Request request, final File file) {
         try {
             final Response response = super.processFileRequest(request, file);
-            if (HttpResults.NOT_MODIFIED.equals(response.getHttpResult())) {
+            if (HttpCode.NOT_MODIFIED == response.getHttpCode()) {
                 return response;
             }
 

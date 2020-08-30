@@ -10,7 +10,7 @@ import com.pavlenko.dto.Request;
 import com.pavlenko.dto.Response;
 import com.pavlenko.service.FileService;
 import com.pavlenko.service.ResponseService;
-import com.pavlenko.util.HttpResults;
+import com.pavlenko.util.HttpCode;
 
 public class UnsupportedRequestProcessor extends GetRequestProcessor {
     private static final Logger logger = LogManager.getLogger();
@@ -39,7 +39,7 @@ public class UnsupportedRequestProcessor extends GetRequestProcessor {
     private Response processUnsupportedRequest() {
         try {
             final Response response = responseService.buildEmptyHtmlResponse();
-            response.setHttpResult(HttpResults.FORBIDDEN);
+            response.setHttpCode(HttpCode.FORBIDDEN);
 
             final String content = fileService.getFileStringContent(FORBIDDEN_RESPONSE);
             response.setPayload(content.getBytes());

@@ -16,7 +16,7 @@ import com.pavlenko.dto.Request;
 import com.pavlenko.dto.Response;
 import com.pavlenko.service.FileService;
 import com.pavlenko.service.ResponseService;
-import com.pavlenko.util.HttpResults;
+import com.pavlenko.util.HttpCode;
 
 public class UnsupportedRequestProcessorTest {
     private static final String CONTENT = "content";
@@ -43,7 +43,7 @@ public class UnsupportedRequestProcessorTest {
         final Response result = unsupportedRequestProcessor.processFileRequest(request, file);
 
         assertEquals(response, result);
-        assertEquals(HttpResults.FORBIDDEN, result.getHttpResult());
+        assertEquals(HttpCode.FORBIDDEN, result.getHttpCode());
         assertEquals(CONTENT, new String(result.getPayload()));
 
         verify(responseServiceMock).buildEmptyHtmlResponse();
@@ -58,7 +58,7 @@ public class UnsupportedRequestProcessorTest {
         final Response result = unsupportedRequestProcessor.processDirectoryRequest(request, file);
 
         assertEquals(response, result);
-        assertEquals(HttpResults.FORBIDDEN, result.getHttpResult());
+        assertEquals(HttpCode.FORBIDDEN, result.getHttpCode());
         assertEquals(CONTENT, new String(result.getPayload()));
 
         verify(responseServiceMock).buildEmptyHtmlResponse();

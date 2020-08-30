@@ -1,6 +1,8 @@
 package com.pavlenko.processor;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -20,7 +22,7 @@ import com.pavlenko.dto.Response;
 import com.pavlenko.service.FileService;
 import com.pavlenko.service.HtmlService;
 import com.pavlenko.service.ResponseService;
-import com.pavlenko.util.HttpResults;
+import com.pavlenko.util.HttpCode;
 
 public class GetRequestProcessorTest {
     private static final byte[] RAW_CONTENT = "content".getBytes();
@@ -57,7 +59,7 @@ public class GetRequestProcessorTest {
         final Response result = getRequestProcessor.processFileRequest(request, file);
 
         assertEquals(response, result);
-        assertEquals(HttpResults.NOT_MODIFIED, result.getHttpResult());
+        assertEquals(HttpCode.NOT_MODIFIED, result.getHttpCode());
 
         verify(fileServiceMock).getContentType(eq(file));
         verify(fileServiceMock).getFileEtag(eq(file));
@@ -76,7 +78,7 @@ public class GetRequestProcessorTest {
         final Response result = getRequestProcessor.processFileRequest(request, file);
 
         assertEquals(response, result);
-        assertEquals(RAW_CONTENT, result.getPayload());
+        assertSame(RAW_CONTENT, result.getPayload());
 
         verify(fileServiceMock).getContentType(eq(file));
         verify(fileServiceMock).getFileEtag(eq(file));

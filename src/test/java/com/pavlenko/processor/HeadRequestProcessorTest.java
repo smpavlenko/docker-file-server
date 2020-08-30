@@ -17,7 +17,7 @@ import com.pavlenko.dto.Request;
 import com.pavlenko.dto.Response;
 import com.pavlenko.service.FileService;
 import com.pavlenko.service.ResponseService;
-import com.pavlenko.util.HttpResults;
+import com.pavlenko.util.HttpCode;
 
 public class HeadRequestProcessorTest {
     private static final String CONTENT_TYPE = "text/plain";
@@ -45,7 +45,7 @@ public class HeadRequestProcessorTest {
         final Response result = headRequestProcessor.processFileRequest(request, file);
 
         assertEquals(response, result);
-        assertEquals(HttpResults.NOT_MODIFIED, result.getHttpResult());
+        assertEquals(HttpCode.NOT_MODIFIED, result.getHttpCode());
 
         verify(fileServiceMock).getContentType(eq(file));
         verify(fileServiceMock).getFileEtag(eq(file));
@@ -88,7 +88,7 @@ public class HeadRequestProcessorTest {
         final Response result = headRequestProcessor.processNotFoundRequest();
 
         assertEquals(response, result);
-        assertEquals(HttpResults.NOT_FOUND, result.getHttpResult());
+        assertEquals(HttpCode.NOT_FOUND, result.getHttpCode());
 
         verify(responseServiceMock).buildEmptyHtmlResponse();
     }

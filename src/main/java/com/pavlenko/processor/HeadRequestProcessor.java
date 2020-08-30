@@ -4,7 +4,7 @@ import com.pavlenko.dto.Request;
 import com.pavlenko.dto.Response;
 import com.pavlenko.service.FileService;
 import com.pavlenko.service.ResponseService;
-import com.pavlenko.util.HttpResults;
+import com.pavlenko.util.HttpCode;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,7 @@ public class HeadRequestProcessor extends AbstractRequestProcessor {
             final Response response = responseService.buildEmptyContentResponse(contentType, file.length(), etag, file.lastModified());
             if (!fileService.isCacheFlowValid(file, request.getHeaders())) {
                 logger.debug("File {} is not modified", file.getName());
-                response.setHttpResult(HttpResults.NOT_MODIFIED);
+                response.setHttpCode(HttpCode.NOT_MODIFIED);
             }
             return response;
         } catch (final IOException e) {
@@ -44,7 +44,7 @@ public class HeadRequestProcessor extends AbstractRequestProcessor {
     @Override
     protected Response processNotFoundRequest() {
         final Response response = responseService.buildEmptyHtmlResponse();
-        response.setHttpResult(HttpResults.NOT_FOUND);
+        response.setHttpCode(HttpCode.NOT_FOUND);
         return response;
     }
 }

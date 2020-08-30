@@ -2,7 +2,7 @@ package com.pavlenko.service;
 
 import com.pavlenko.dto.Response;
 import com.pavlenko.util.ContentTypeUtil;
-import com.pavlenko.util.HttpResults;
+import com.pavlenko.util.HttpCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
@@ -11,7 +11,7 @@ import java.util.Date;
 public class ResponseService {
     public Response buildEmptyHtmlResponse() {
         final Response response = new Response();
-        response.setHttpResult(HttpResults.OK);
+        response.setHttpCode(HttpCode.OK);
 
         response.addHeader("date", new Date().toString());
         response.addHeader("content-type", ContentTypeUtil.TEXT_HTML);
@@ -20,7 +20,7 @@ public class ResponseService {
 
     public Response buildEmptyContentResponse(final String contentType, final long fileLength, final String fileEtag, final long fileLastModified) {
         final Response response = new Response();
-        response.setHttpResult(HttpResults.OK);
+        response.setHttpCode(HttpCode.OK);
 
         response.addHeader("date", new Date().toString());
         response.addHeader("content-type", contentType);
@@ -36,9 +36,9 @@ public class ResponseService {
         return response;
     }
 
-    public Response buildEmptyFailoverResponse() {
+    Response buildEmptyFailoverResponse() {
         final Response response = new Response();
-        response.setHttpResult(HttpResults.SERVICE_UNAVAILABLE);
+        response.setHttpCode(HttpCode.SERVICE_UNAVAILABLE);
         response.addHeader("date", new Date().toString());
         response.addHeader("content-type", ContentTypeUtil.TEXT_HTML);
         return response;

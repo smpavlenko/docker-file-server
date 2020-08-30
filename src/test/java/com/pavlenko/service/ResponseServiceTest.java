@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.pavlenko.dto.Response;
 import com.pavlenko.util.ContentTypeUtil;
-import com.pavlenko.util.HttpResults;
+import com.pavlenko.util.HttpCode;
 
 public class ResponseServiceTest {
 
@@ -21,8 +21,8 @@ public class ResponseServiceTest {
     public void testBuildEmptyFailoverResponse() {
         final Response response = responseService.buildEmptyFailoverResponse();
 
-        assertEquals(HttpResults.SERVICE_UNAVAILABLE, response.getHttpResult());
-        assertNull(response.getPayload());
+        assertEquals(HttpCode.SERVICE_UNAVAILABLE, response.getHttpCode());
+        assertEquals(0, response.getPayload().length);
         assertNotNull(response.getHeaders().get("date"));
         assertEquals(ContentTypeUtil.TEXT_HTML, response.getHeaders().get("content-type"));
     }
@@ -31,7 +31,7 @@ public class ResponseServiceTest {
     public void testBuildFailoverResponse() {
         final Response response = responseService.buildFailoverResponse("message");
 
-        assertEquals(HttpResults.SERVICE_UNAVAILABLE, response.getHttpResult());
+        assertEquals(HttpCode.SERVICE_UNAVAILABLE, response.getHttpCode());
         assertNotNull(response.getHeaders().get("date"));
         assertEquals(ContentTypeUtil.TEXT_HTML, response.getHeaders().get("content-type"));
         assertEquals("<html><body><h1>500 Internal Server Error</h1><h2>message</h2></body></html>", new String(response.getPayload()));
@@ -41,10 +41,10 @@ public class ResponseServiceTest {
     public void testBuildEmptyHtmlResponse() {
         final Response response = responseService.buildEmptyHtmlResponse();
 
-        assertEquals(HttpResults.OK, response.getHttpResult());
+        assertEquals(HttpCode.OK, response.getHttpCode());
         assertNotNull(response.getHeaders().get("date"));
         assertEquals(ContentTypeUtil.TEXT_HTML, response.getHeaders().get("content-type"));
-        assertNull(response.getPayload());
+        assertEquals(0, response.getPayload().length);
     }
 
     @Test
@@ -54,12 +54,12 @@ public class ResponseServiceTest {
                                                                             ETAG,
                                                                             new Date().getTime());
 
-        assertEquals(HttpResults.OK, response.getHttpResult());
+        assertEquals(HttpCode.OK, response.getHttpCode());
         assertNotNull(response.getHeaders().get("date"));
         assertEquals(ETAG, response.getHeaders().get("ETag"));
         assertEquals("123", response.getHeaders().get("content-length"));
         assertNotNull(response.getHeaders().get("Last-Modified"));
         assertEquals(ContentTypeUtil.TEXT_PLAIN, response.getHeaders().get("content-type"));
-        assertNull(response.getPayload());
+        assertEquals(0, response.getPayload().length);
     }
 }

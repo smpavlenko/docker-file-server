@@ -20,6 +20,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.pavlenko.util.ContentTypeUtil;
+
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -39,12 +41,11 @@ public class FileService {
         if ((file != null) && file.isDirectory()) {
             try (final Stream<Path> pathStream = Files.list(file.toPath())) {
                 pathStream.forEach(path -> {
-
-                    final File file1 = path.toFile();
-                    if (file1.isDirectory()) {
-                        files.add(file1.getName() + '/');
+                    final File subFile = path.toFile();
+                    if (subFile.isDirectory()) {
+                        files.add(subFile.getName() + '/');
                     } else {
-                        files.add(file1.getName());
+                        files.add(subFile.getName());
                     }
                 });
             }
@@ -62,7 +63,8 @@ public class FileService {
     }
 
     public String getContentType(final File file) throws IOException {
-        return Files.probeContentType(file.toPath());
+        final String contentType = Files.probeContentType(file.toPath());
+        return (contentType == null) ? ContentTypeUtil.TEXT_PLAIN : contentType;
     }
 
     public String getFileEtag(final File file) throws IOException {

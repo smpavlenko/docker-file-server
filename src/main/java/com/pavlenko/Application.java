@@ -1,11 +1,10 @@
 package com.pavlenko;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.File;
 import java.io.IOException;
-import java.net.ServerSocket;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Application {
     private static final Logger logger = LogManager.getLogger();
@@ -26,19 +25,11 @@ public class Application {
             return;
         }
 
-        try (final ServerSocket serverSocket = new ServerSocket(PORT)) {
-            logger.info("Server is started");
-            logger.info("Listening port: {}", PORT);
+        try {
+            logger.info("Creating server");
 
-            final var module = new Module();
-            while (true) {
-                final Server server = new Server(
-                        serverSocket.accept(),
-                        rootDir.getAbsolutePath(),
-                        module.requestPatternService,
-                        module.processorFactory);
-                new Thread(server).start();
-            }
+            final Server server = new Server(PORT, rootDir.getAbsolutePath());
+            server.start();
         } catch (final IOException e) {
             logger.error("Server Connection error: {}", e.getMessage());
         }
