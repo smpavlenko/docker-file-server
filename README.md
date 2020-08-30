@@ -33,6 +33,7 @@ To build, deploy and verify application you must have installed
 ├── README.md
 ├── Dockerfile
 ├── install.sh
+├── acceptance.sh
 ├── pom.xml
 ├── .travis.yml
 ├── assets
@@ -76,17 +77,33 @@ To build, deploy and verify application you must have installed
 
 **log4j2.xml** log4j2 xml configuration
 
+**install.sh** build application, create docker and run it
+
+**acceptance.sh** primitive acceptance tests
+
 ## Building, deployment and starting server
 To build java application, run in console 
 ```bash
 mvn clean install
 ```
 
+
+To run application locally, run
+```bash
+java -jar target/docker-file-server.jar $root_dir
+```
+where *$root_dir* is user-specified root directory to observe, e.g.:
+```bash
+java -jar target/docker-file-server.jar $(pwd)
+```
+
+
 To build docker container, run in console 
 ```bash
 docker build -t docker-file-server .
 ```
 where *docker-file-server* is arbitrary name of container
+
 
 To run docker container, run in console 
 ```bash
@@ -96,6 +113,7 @@ where *$root_dir* is user-specified root directory to observe, e.g.:
 ```bash
 docker run -it --rm -p 8080:8080 -v $(pwd):/root_dir --name docker-file-server docker-file-server /root_dir
 ```
+
 
 To build and deploy all at once, run
 ```bash
@@ -157,4 +175,15 @@ Last-modified: Sun Aug 30 14:59:52 CEST 2020
 Content-type: text/plain
 Etag: "9e60ce9a14ff316c302f6fe6f5462052"
 Content-length: 5049
+```
+
+To run simple primitive acceptance tests, run in console
+```bash
+./acceptance.sh
+```
+server must be up and running, and http://localhost:8080/README.md must be reachable. Result should be
+```bash
+sergiipavlenko$ ./acceptance.sh 
+Asserting requests to http://localhost:8080/README.md
+Completed
 ```
