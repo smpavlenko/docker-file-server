@@ -14,7 +14,7 @@ import com.pavlenko.util.HttpCode;
 
 public class UnsupportedRequestProcessor extends GetRequestProcessor {
     private static final Logger logger = LogManager.getLogger();
-    private static final String FORBIDDEN_RESPONSE = "403_response.html";
+    private static final String METHOD_NOT_ALLOWED_RESPONSE = "405_response.html";
 
     private final FileService fileService;
     private final ResponseService responseService;
@@ -39,9 +39,9 @@ public class UnsupportedRequestProcessor extends GetRequestProcessor {
     private Response processUnsupportedRequest() {
         try {
             final Response response = responseService.buildEmptyHtmlResponse();
-            response.setHttpCode(HttpCode.FORBIDDEN);
+            response.setHttpCode(HttpCode.METHOD_NOT_ALLOWED);
 
-            final String content = fileService.getFileStringContent(FORBIDDEN_RESPONSE);
+            final String content = fileService.getFileStringContent(METHOD_NOT_ALLOWED_RESPONSE);
             response.setPayload(content.getBytes());
             return response;
         } catch (final IOException e) {

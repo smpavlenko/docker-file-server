@@ -38,30 +38,30 @@ public class UnsupportedRequestProcessorTest {
     @Test
     public void testProcessFileRequest() throws IOException {
         when(responseServiceMock.buildEmptyHtmlResponse()).thenReturn(response);
-        when(fileServiceMock.getFileStringContent(eq("403_response.html"))).thenReturn(CONTENT);
+        when(fileServiceMock.getFileStringContent(eq("405_response.html"))).thenReturn(CONTENT);
 
         final Response result = unsupportedRequestProcessor.processFileRequest(request, file);
 
         assertEquals(response, result);
-        assertEquals(HttpCode.FORBIDDEN, result.getHttpCode());
+        assertEquals(HttpCode.METHOD_NOT_ALLOWED, result.getHttpCode());
         assertEquals(CONTENT, new String(result.getPayload()));
 
         verify(responseServiceMock).buildEmptyHtmlResponse();
-        verify(fileServiceMock).getFileStringContent(eq("403_response.html"));
+        verify(fileServiceMock).getFileStringContent(eq("405_response.html"));
     }
 
     @Test
     public void testProcessDirectoryRequest() throws IOException {
         when(responseServiceMock.buildEmptyHtmlResponse()).thenReturn(response);
-        when(fileServiceMock.getFileStringContent(eq("403_response.html"))).thenReturn(CONTENT);
+        when(fileServiceMock.getFileStringContent(eq("405_response.html"))).thenReturn(CONTENT);
 
         final Response result = unsupportedRequestProcessor.processDirectoryRequest(request, file);
 
         assertEquals(response, result);
-        assertEquals(HttpCode.FORBIDDEN, result.getHttpCode());
+        assertEquals(HttpCode.METHOD_NOT_ALLOWED, result.getHttpCode());
         assertEquals(CONTENT, new String(result.getPayload()));
 
         verify(responseServiceMock).buildEmptyHtmlResponse();
-        verify(fileServiceMock).getFileStringContent(eq("403_response.html"));
+        verify(fileServiceMock).getFileStringContent(eq("405_response.html"));
     }
 }

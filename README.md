@@ -51,8 +51,8 @@ To build, deploy and verify application you must have installed
     │   └── resources
     │       ├── templates
     │       │   └── dir_template.html
-    │       ├── 403_response.html
     │       ├── 404_response.html
+    │       ├── 405_response.html
     │       └── log4j2.xml
     │
     └── test
@@ -70,9 +70,9 @@ To build, deploy and verify application you must have installed
 
 **templates/dir_template.html** html template for list files response
 
-**403_response.html** HTML response for 403 HTTP code
+**404_response.html** HTML response for 404 Not Found HTTP code
 
-**404_response.html** HTML response for 404 HTTP code
+**405_response.html** HTML response for 405 Method Not Allowed HTTP code
 
 **log4j2.xml** log4j2 xml configuration
 
@@ -123,10 +123,10 @@ Content-length: 5039
 Example of POST(unsupported) request
 ```bash
 sergiipavlenko$ curl -X POST --head http://localhost:8080/README.md
-HTTP/1.1 403 Forbidden
-Date: Sun, 30 Aug 2020 13:07:48 GMT
+HTTP/1.1 405 Method Not Allowed
+Date: Sun, 30 Aug 2020 13:41:15 GMT
 Content-type: text/html
-Content-length: 206
+Content-length: 224
 ```
 
 Example of 404 Not Found request
